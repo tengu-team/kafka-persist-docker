@@ -1,5 +1,4 @@
 import os
-import json
 import sys
 import backoff
 from kafka import KafkaConsumer, errors
@@ -23,7 +22,7 @@ def connect_kafka(kafka, group):
 
 def main():
     kafka = os.environ['kafka'].split(' ')
-    topics = os.environ['topics'].split(' ')    
+    topics = os.environ['topics'].split(' ')
     group = os.environ['groupid']
     datastore_type = os.environ['datastore_type']
     datastore_conn = os.environ['datastore_conn']
@@ -36,8 +35,8 @@ def main():
 
     datastore = DataStoreFactory.create_datastore(datastore_type)
     datastore.connect(datastore_conn)
-    print('CREATED DATASTORE')
-
+    print('CREATED DATASTORE CONNECTION')
+    sys.stdout.flush()
     consumer = connect_kafka(kafka, group)
     print('KAFKA CONNECTED')
     sys.stdout.flush()
@@ -46,8 +45,6 @@ def main():
     sys.stdout.flush()
     for msg in consumer:
         data = msg.value.decode('utf-8')
-        print(data)
-        sys.stdout.flush()
         datastore.store(data, msg.topic)
 
 
