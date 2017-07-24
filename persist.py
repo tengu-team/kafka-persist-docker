@@ -25,16 +25,11 @@ def main():
     topics = os.environ['topics'].split(' ')
     group = os.environ['groupid']
     datastore_type = os.environ['datastore_type']
-    datastore_conn = os.environ['datastore_conn']
-    print(kafka)
-    print(topics)
-    print(group)
-    print(datastore_type)
-    print(datastore_conn)
+    print(os.environ)
     sys.stdout.flush()
 
     datastore = DataStoreFactory.create_datastore(datastore_type)
-    datastore.connect(datastore_conn)
+    datastore.connect()
     print('CREATED DATASTORE CONNECTION')
     sys.stdout.flush()
     consumer = connect_kafka(kafka, group)
